@@ -17,7 +17,9 @@ spec:
           image: multi-author-blog/auth
           env:
             - name: AUTH_PORT
-              value: "3000"
+              value: "3003"
+            - name: MONGO_URI
+              value: "mongodb://auth-mongo-srv:27017/auth"
 ---
 apiVersion: v1
 kind: Service
@@ -29,5 +31,5 @@ spec:
   ports:
     - name: auth
       protocol: TCP
-      port: 3000
-      targetPort: 3000
+      port: 3003
+      targetPort: 3003

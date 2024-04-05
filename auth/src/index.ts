@@ -1,18 +1,23 @@
 import express from "express";
+import mongoose from "mongoose";
 import { json } from "body-parser";
+import { router } from "./api/routes";
 
 const app = express();
 app.use(json());
+app.use(router);
 
-app.use((req, res, next) => {
-  console.log("Request -", "Method:", req.method, " ", "URL:", req.url);
-  next();
-});
+const start = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI!);
+    console.log("AUTH SERVICE: Connected to MongoDB");
+  } catch (err) {
+    console.error(err);
+  }
 
-app.get("/api/users/hello", (req, res, next) => {
-  res.send("BAREV");
-});
+  app.listen(process.env.AUTH_PORT, () => {
+    console.log("AUTH SERVICE: Listening on port " + process.env.AUTH_PORT);
+  });
+};
 
-app.listen(process.env.AUTH_PORT, () => {
-  console.log("AUTH SERVICE: Listening on port " + process.env.AUTH_PORT);
-});
+start();
