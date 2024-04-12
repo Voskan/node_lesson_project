@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import User from "../../models/UserModel";
+import jwt from "jsonwebtoken";
 
 export const signUp = async (req: Request, res: Response) => {
   try {
@@ -14,7 +15,15 @@ export const signUp = async (req: Request, res: Response) => {
     const user = User.build({ email, password });
     await user.save();
 
-    return res.status(201).json({ user });
+    const userJwt = jwt.sign(
+      {
+        id: user._id,
+        email: user.email,
+      },
+      "ahavor_secret_key"
+    );
+
+    return res.status(201).json({ token: userJwt });
   } catch (error) {
     console.error(error);
   }
