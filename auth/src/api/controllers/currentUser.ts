@@ -1,5 +1,16 @@
-import { Request, Response } from "express";
+import { NotFoundError } from "@barev/common";
+import { NextFunction, Request, Response } from "express";
 
-export const currentUser = async (req: Request, res: Response) => {
-  res.json({ message: "Current user route" });
+export const currentUserController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const user = req.currentUser;
+
+  if (!user) {
+    throw new NotFoundError();
+  }
+
+  return res.send(user);
 };

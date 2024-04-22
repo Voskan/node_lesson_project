@@ -6,8 +6,8 @@ const start = async () => {
     throw new Error("MONGO_URI must be defined.");
   }
 
-  if (!process.env.AUTH_PORT) {
-    throw new Error("AUTH_PORT must be defined.");
+  if (!process.env.POST_PORT) {
+    throw new Error("POST_PORT must be defined.");
   }
 
   if (!process.env.JWT_KEY) {
@@ -16,13 +16,13 @@ const start = async () => {
 
   try {
     await mongoose.connect(process.env.MONGO_URI!);
-    logger.info("AUTH SERVICE: Connected to MongoDB");
+    logger.info("POST SERVICE: Connected to MongoDB");
   } catch (err) {
     throw err;
   }
 
-  app.listen(process.env.AUTH_PORT, () => {
-    logger.info("AUTH SERVICE: Listening on port " + process.env.AUTH_PORT);
+  app.listen(process.env.POST_PORT, () => {
+    logger.info("POST SERVICE: Listening on port " + process.env.POST_PORT);
   });
 };
 

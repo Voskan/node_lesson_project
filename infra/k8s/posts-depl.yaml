@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-depl
+  name: posts-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: auth
+      app: posts
   template:
     metadata:
       labels:
-        app: auth
+        app: posts
     spec:
       containers:
-        - name: auth
-          image: multi-author-blog/auth
+        - name: posts
+          image: multi-author-blog/posts
           env:
-            - name: AUTH_PORT
+            - name: POST_PORT
               value: "3003"
             - name: MONGO_URI
-              value: "mongodb://auth-mongo-srv:27017/auth"
+              value: "mongodb://posts-mongo-srv:27017/posts"
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:
@@ -29,12 +29,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: auth-srv
+  name: posts-srv
 spec:
   selector:
-    app: auth
+    app: posts
   ports:
-    - name: auth
+    - name: posts
       protocol: TCP
       port: 3003
       targetPort: 3003
